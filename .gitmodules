@@ -1,0 +1,3 @@
+[submodule "AppDrivers/MPU6050-Cube"]
+	path = AppDrivers/MPU6050-Cube
+	url = https://github.com/tvlad1234/MPU6050-Cube.git

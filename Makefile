@@ -12,7 +12,7 @@
 # ------------------------------------------------
 
 # drivers
-APPDRIV = dummy
+APPDRIV = MPU6050-Cube
 
 #other subdirectories
 SUBDIRS = App
