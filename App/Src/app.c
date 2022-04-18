@@ -1,9 +1,11 @@
 #include "main.h"
 #include "mpu6050.h"
 
-float ax, ay, az, gx, gy, gz;
+#define DPS_TO_RADS (0.017453293F)
+
+float x, y, z;
 char sx[10], sy[10], sz[10];
-uint8_t gyroOrAccel;
+uint8_t showGyro;
 
 int main(void)
 {
@@ -27,30 +29,30 @@ int main(void)
         clearDisplay();
         setCursor(0, 0);
 
-        if (!gyroOrAccel)
+        if (!showGyro)
         {
-            readAccel(&ax, &ay, &az);
-            printFloat(ax, 1, sx);
-            printFloat(ay, 1, sy);
-            printFloat(az, 1, sz);
+            readMPUAccel(&x, &y, &z);
+            printFloat(x, 1, sx);
+            printFloat(y, 1, sy);
+            printFloat(z, 1, sz);
             printf("Accel in m/s^2\nX: %s Y: %s\nZ: %s\n", sx, sy, sz);
         }
         else
         {
-            readGyro(&gx, &gy, &gz);
-            printFloat(gx, 1, sx);
-            printFloat(gy, 1, sy);
-            printFloat(gz, 1, sz);
-            printf("AngVel in deg/s\nX: %s Y: %s\nZ: %s\n", sx, sy, sz);
+            readMPUGyro(&x, &y, &z);
+            printFloat(x * DPS_TO_RADS, 1, sx);
+            printFloat(y * DPS_TO_RADS, 1, sy);
+            printFloat(z * DPS_TO_RADS, 1, sz);
+            printf("AngVel in rad/s\nX: %s Y: %s\nZ: %s\n", sx, sy, sz);
         }
 
         if (readButton())
         {
-            gyroOrAccel = !gyroOrAccel;
+            showGyro = !showGyro;
             HAL_Delay(500);
         }
 
         flushDisplay();
-        HAL_Delay(100);
+        HAL_Delay(50);
     }
 }
