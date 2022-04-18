@@ -2,7 +2,8 @@
 #include "mpu6050.h"
 
 float ax, ay, az, gx, gy, gz;
-uint8_t show;
+char sx[10], sy[10], sz[10];
+uint8_t gyroOrAccel;
 
 int main(void)
 {
@@ -26,20 +27,26 @@ int main(void)
         clearDisplay();
         setCursor(0, 0);
 
-        if (!show)
+        if (!gyroOrAccel)
         {
             readAccel(&ax, &ay, &az);
-            printf("Accel in m/s^2\nX: %.1f Y: %.1f\nZ: %.1f\n", ax, ay, az);
+            printFloat(ax, 1, sx);
+            printFloat(ay, 1, sy);
+            printFloat(az, 1, sz);
+            printf("Accel in m/s^2\nX: %s Y: %s\nZ: %s\n", sx, sy, sz);
         }
         else
         {
             readGyro(&gx, &gy, &gz);
-            printf("AngVel in deg/s\nX: %.1f Y: %.1f\nZ: %.1f\n", gx, gy, gz);
+            printFloat(gx, 1, sx);
+            printFloat(gy, 1, sy);
+            printFloat(gz, 1, sz);
+            printf("AngVel in deg/s\nX: %s Y: %s\nZ: %s\n", sx, sy, sz);
         }
 
         if (readButton())
         {
-            show = !show;
+            gyroOrAccel = !gyroOrAccel;
             HAL_Delay(500);
         }
 
